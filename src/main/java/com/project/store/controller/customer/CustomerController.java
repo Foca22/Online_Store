@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public class CustomerController {
     private final CustomerMapper customerMapper;
 
     @PostMapping()
-    public CustomerDto saveCustomer (@Valid @RequestBody CustomerDto requestSaveCustomer){
+    public CustomerDto saveCustomer(@Valid @RequestBody CustomerDto requestSaveCustomer) {
         Customer customerToBeSaved = customerMapper.fromDtoToEntity(requestSaveCustomer);
         Customer savedCustomer = customerService.saveCustomer(customerToBeSaved);
 
@@ -26,11 +27,29 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public CustomerDto getCustomer (@PathVariable Integer id){
+    public CustomerDto getCustomer(@PathVariable Integer id) {
         Customer customer = customerService.getCustomer(id);
 
         return customerMapper.fromEntityToDto(customer);
+    }
 
+    @GetMapping
+    public List<CustomerDto> getAllCustomers() {
+        List<Customer> customerList = customerService.getAllCustomers();
+        return customerMapper.fromEntitiesToDtos(customerList);
+    }
+
+    @PutMapping()
+    public CustomerDto updateCustomer(@Valid @RequestBody CustomerDto customerUpdateRequest){
+        Customer customerToBeUpdated = customerMapper.fromDtoToEntity(customerUpdateRequest);
+        Customer saveUpdatedCustomer = customerService.updateCustomer(customerToBeUpdated);
+
+        return customerMapper.fromEntityToDto(saveUpdatedCustomer);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCustomer(@PathVariable Integer id) {
+        customerService.deleteCustomer(id);
     }
 
 }

@@ -8,6 +8,7 @@ import com.project.store.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,6 +29,28 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer getCustomer(Integer id) {
         return findCustomerById(id);
+    }
+
+    @Override
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
+    }
+
+    @Override
+    public Customer updateCustomer(Customer customerToBeUpdated) {
+        Customer updatedCustomer = findCustomerById(customerToBeUpdated.getId());
+        updatedCustomer.setFirstName(customerToBeUpdated.getFirstName());
+        updatedCustomer.setLastName(customerToBeUpdated.getLastName());
+        updatedCustomer.setCnp(customerToBeUpdated.getCnp());
+        updatedCustomer.setEmail(customerToBeUpdated.getEmail());
+
+        return customerRepository.save(updatedCustomer);
+    }
+
+    @Override
+    public void deleteCustomer(Integer id) {
+        Customer customer = findCustomerById(id);
+        customerRepository.delete(customer);
     }
 
     private Customer findCustomerById(Integer id) {

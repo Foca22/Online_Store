@@ -22,6 +22,10 @@ public class CustomerDto {
     @Email(regexp = ".+[@].+[\\.].+", message = "email.must.match.\'firstName.lastName@domain.com\'.format")
     private String email;
 
+    public Integer getId() {
+        return id;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -42,9 +46,7 @@ public class CustomerDto {
         this.lastName = lastName;
     }
 
-    public String getCnp() {
-        return cnp;
-    }
+    public String getCnp() { return cnp; }
 
     public void setCnp(String cnp) {
         this.cnp = cnp;

@@ -17,10 +17,17 @@ import java.util.List;
 @ResponseBody
 public class ControllerExceptionHandler {
 
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    private ErrorDto handleException(HttpServletRequest request, Exception exception) {
+        return new ErrorDto("Error has occurred", exception.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value());
+    }
+
     @ExceptionHandler({CustomerNotFoundException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ErrorDto handleCostumerNotFoundException(HttpServletRequest request, Exception exception) {
-        return new ErrorDto("404 NOT_FOUND", exception.getMessage(), HttpStatus.NOT_FOUND.value());
+        return handleBaseException(exception, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
@@ -32,10 +39,16 @@ public class ControllerExceptionHandler {
         StringBuilder message = new StringBuilder();
         for (ObjectError objectError : allErrors) {
             message.append(objectError.getDefaultMessage());
-            message.append(";");
         }
+
         return new ErrorDto("failed.validation.for.request.body", message.toString(),
                 HttpStatus.BAD_REQUEST.value());
+    }
+
+    private ErrorDto handleBaseException(Exception exception, HttpStatus httpStatus){
+        BaseException baseException = (BaseException) exception;
+
+        return new ErrorDto(baseException.getErrorCode(), baseException.getMessage(), httpStatus.value());
     }
 
 }

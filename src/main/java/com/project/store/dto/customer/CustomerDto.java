@@ -1,34 +1,29 @@
-package com.project.store.model.customer;
+package com.project.store.dto.customer;
 
-import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
+public class CustomerDto {
 
-@Entity
-@Table(name = "customer")
-public class Customer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customer_id", updatable = false, nullable = false)
     private Integer id;
 
-    @Column(name = "first_name")
+    @NotEmpty(message = "customer.first.name.cannot.be.empty")
     private String firstName;
 
-    @Column(name = "last_name")
+    @NotEmpty(message = "customer.last.name.cannot.be.empty")
     private String lastName;
 
-    @Column(name = "cnp")
+    @NotEmpty(message = "customer.cnp.cannot.be.empty")
+    @Size(min = 13, max = 13, message = "customer.cnp.must.have.13.digits")
     private String cnp;
 
-    @Column(name = "email")
+    @NotEmpty(message = "customer.email.cannot.be.empty")
+    @Email(regexp = ".+[@].+[\\.].+", message = "email.must.match.\'firstName.lastName@domain.com\'.format")
     private String email;
 
-    public Customer() {
-    }
-
-    public Integer getId() {
-        return id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -62,7 +57,4 @@ public class Customer {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
-
 }

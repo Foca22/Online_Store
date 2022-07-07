@@ -1,32 +1,36 @@
 package com.project.store.controller.customer;
 
-import com.project.store.dto.request.CreateCustomerRequest;
-import com.project.store.dto.response.CustomerResponse;
+import com.project.store.dto.customer.CustomerDto;
+import com.project.store.mapper.CustomerMapper;
+import com.project.store.model.customer.Customer;
 import com.project.store.service.impl.CustomerServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "api/customer")
+@RequestMapping(value = "/customer")
 public class CustomerController {
 
     private final CustomerServiceImpl customerService;
+    private final CustomerMapper customerMapper;
 
     @PostMapping()
-    ResponseEntity saveCustomer (@Valid @RequestBody CreateCustomerRequest createCustomerRequest){
-        CustomerResponse customerResponse = customerService.saveCustomer(createCustomerRequest);
-        return ResponseEntity.ok(customerResponse);
+    public CustomerDto saveCustomer (@Valid @RequestBody CustomerDto requestSaveCustomer){
+        Customer customerToBeSaved = customerMapper.fromDtoToEntity(requestSaveCustomer);
+        Customer savedCustomer = customerService.saveCustomer(customerToBeSaved);
+
+        return customerMapper.fromEntityToDto(savedCustomer);
     }
 
     @GetMapping("/{id}")
-    ResponseEntity getCustomer (@PathVariable Integer id){
-        CustomerResponse customerResponse = customerService.getCustomer(id);
-        return ResponseEntity.ok(customerResponse);
+    public CustomerDto getCustomer (@PathVariable Integer id){
+        Customer customer = customerService.getCustomer(id);
+
+        return customerMapper.fromEntityToDto(customer);
+
     }
 
 }

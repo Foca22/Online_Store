@@ -1,11 +1,10 @@
 package com.project.store.service;
 
-import com.project.store.dto.request.CreateCustomerRequest;
-import com.project.store.dto.response.CustomerResponse;
+import com.project.store.model.customer.Customer;
 
 public interface CustomerService {
 
-    CustomerResponse saveCustomer(CreateCustomerRequest createCustomerRequest) ;
+    Customer saveCustomer(Customer customerToBeSaved) ;
 
-    CustomerResponse  getCustomer(Integer id);
+    Customer  getCustomer(Integer id);
 }

@@ -4,6 +4,10 @@ import com.project.store.dto.customer.CustomerDto;
 import com.project.store.model.customer.Customer;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Component
 public class CustomerMapper {
@@ -22,12 +26,21 @@ public class CustomerMapper {
 
     public Customer fromDtoToEntity(CustomerDto dto) {
         Customer entity = new Customer();
-
+        entity.setId(dto.getId());
         entity.setFirstName(dto.getFirstName());
         entity.setLastName(dto.getLastName());
         entity.setCnp(dto.getCnp());
         entity.setEmail(dto.getEmail());
 
         return entity;
+    }
+
+    public List<CustomerDto> fromEntitiesToDtos (List<Customer> customerEntitiesList){
+        if(customerEntitiesList.isEmpty()){
+            return Collections.emptyList();
+        }
+        return customerEntitiesList.stream()
+                .map(customerEntity -> fromEntityToDto(customerEntity))
+                .collect(Collectors.toList());
     }
 }

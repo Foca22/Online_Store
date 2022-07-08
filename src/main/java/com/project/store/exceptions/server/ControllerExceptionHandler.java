@@ -1,6 +1,7 @@
 package com.project.store.exceptions.server;
 
 import com.project.store.dto.error.ErrorDto;
+import com.project.store.exceptions.category.ProductCategoryNotFoundException;
 import com.project.store.exceptions.customer.CustomerNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
@@ -19,20 +20,26 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    private ErrorDto handleException(HttpServletRequest request, Exception exception) {
+    private ErrorDto handleException(Exception exception) {
         return new ErrorDto("Error has occurred", exception.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
     @ExceptionHandler({CustomerNotFoundException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public ErrorDto handleCostumerNotFoundException(HttpServletRequest request, Exception exception) {
+    public ErrorDto handleCostumerNotFoundException(Exception exception) {
+        return handleBaseException(exception, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({ProductCategoryNotFoundException.class})
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ErrorDto handleProductCategoryNotFoundException(Exception exception) {
         return handleBaseException(exception, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ErrorDto handleBadRequestValidation(HttpServletRequest request, Exception exception) {
+    public ErrorDto handleBadRequestValidation(Exception exception) {
         MethodArgumentNotValidException notValidException = (MethodArgumentNotValidException) exception;
         List<ObjectError> allErrors = notValidException.getBindingResult().getAllErrors();
 

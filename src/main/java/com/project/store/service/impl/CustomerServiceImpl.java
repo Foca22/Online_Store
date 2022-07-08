@@ -1,7 +1,7 @@
 package com.project.store.service.impl;
 
-import com.project.store.exceptions.customer.CustomerExceptionMessages;
 import com.project.store.exceptions.customer.CustomerNotFoundException;
+import com.project.store.exceptions.messages.ExceptionMessages;
 import com.project.store.model.customer.Customer;
 import com.project.store.repository.CustomerRepository;
 import com.project.store.service.CustomerService;
@@ -49,15 +49,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomer(Integer id) {
-        Customer customer = findCustomerById(id);
-        customerRepository.delete(customer);
+        customerRepository.deleteById(id);
     }
 
     private Customer findCustomerById(Integer id) {
         Optional<Customer> customerOptional = customerRepository.findById(id);
         if(customerOptional.isEmpty()){
-            throw new CustomerNotFoundException(CustomerExceptionMessages.CUSTOMER_NOT_FOUND.getErrorMessage(),
-                    CustomerExceptionMessages.CUSTOMER_NOT_FOUND.getHttpStatusCode());
+            throw new CustomerNotFoundException(ExceptionMessages.CUSTOMER_NOT_FOUND.getErrorMessage(),
+                    ExceptionMessages.CUSTOMER_NOT_FOUND.getHttpStatusCode());
         }
 
         return customerOptional.get();

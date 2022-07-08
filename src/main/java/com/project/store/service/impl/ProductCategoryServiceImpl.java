@@ -1,8 +1,7 @@
 package com.project.store.service.impl;
 
-import com.project.store.dto.category.ProductCategoryDto;
-import com.project.store.exceptions.category.ProductCategoryExceptionMessages;
 import com.project.store.exceptions.category.ProductCategoryNotFoundException;
+import com.project.store.exceptions.messages.ExceptionMessages;
 import com.project.store.model.category.ProductCategory;
 import com.project.store.repository.ProductCategoryRepository;
 import com.project.store.service.ProductCategoryService;
@@ -55,8 +54,8 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     private ProductCategory findProductCategoryById (Integer id) {
         Optional<ProductCategory> optionalProductCategory = productCategoryRepository.findById(id);
         if(optionalProductCategory.isEmpty()){
-            throw new ProductCategoryNotFoundException(ProductCategoryExceptionMessages.PRODUCT_CATEGORY_NOT_FOUND.getErrorMessage(),
-                    ProductCategoryExceptionMessages.PRODUCT_CATEGORY_NOT_FOUND.getHttpStatusCode());
+            throw new ProductCategoryNotFoundException(ExceptionMessages.PRODUCT_CATEGORY_NOT_FOUND.getErrorMessage(),
+                    ExceptionMessages.PRODUCT_CATEGORY_NOT_FOUND.getHttpStatusCode());
         }
 
         return optionalProductCategory.get();

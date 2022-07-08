@@ -9,13 +9,13 @@ public class ProductCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_category_id", updatable = false, nullable = false)
-    Integer id;
+    private Integer id;
 
     @Column(name = "name")
-    String name;
+    private String name;
 
     @Column(name = "type")
-    String type;
+    private String type;
 
     public ProductCategory() {
     }

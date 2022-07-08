@@ -7,10 +7,10 @@ public class ProductCategoryDto {
     private Integer id;
 
     @NotEmpty(message = "product.category.name.cannot.be.empty")
-    String name;
+    private String name;
 
     @NotEmpty(message = "product.category.type.cannot.be.empty")
-    String type;
+    private String type;
 
     public Integer getId() {
         return id;

@@ -2,7 +2,7 @@ package com.project.store.dto.category;
 
 import javax.validation.constraints.NotEmpty;
 
-public class ProductCategoryDto {
+public class CategoryDto {
 
     private Integer id;
 
@@ -11,6 +11,7 @@ public class ProductCategoryDto {
 
     @NotEmpty(message = "product.category.type.cannot.be.empty")
     private String type;
+
 
     public Integer getId() {
         return id;
@@ -35,4 +36,5 @@ public class ProductCategoryDto {
     public void setType(String type) {
         this.type = type;
     }
+
 }

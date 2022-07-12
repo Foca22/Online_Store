@@ -6,7 +6,9 @@ public enum ExceptionMessages {
 
 
     CUSTOMER_NOT_FOUND("Customer not found!", HttpStatus.NOT_FOUND.toString()),
-    PRODUCT_CATEGORY_NOT_FOUND("Product Category not found!", HttpStatus.NOT_FOUND.toString());
+    PRODUCT_CATEGORY_NOT_FOUND("Product Category not found!", HttpStatus.NOT_FOUND.toString()),
+
+    PRODUCT_NOT_FOUND("Product not found!", HttpStatus.NOT_FOUND.toString());
 
     private final String errorMessage;
     private final String httpStatusCode;

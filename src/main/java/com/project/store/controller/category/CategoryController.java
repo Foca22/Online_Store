@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/category")
@@ -40,17 +41,15 @@ public class CategoryController {
         return categoryMapper.fromEntitiesToDtos(categoryList);
     }
 
-    @GetMapping("/{id}/products")
-    public CategoryWithProductsDto getCategoryWithProducts(@PathVariable Integer id) {
-        Category category = categoryService.getCategory(id);
-
-        return categoryMapper.fromEntityToDtoWithProducts(category);
-    }
-
-    @GetMapping("/categories-with-products")
-    public List<CategoryWithProductsDto> getAllCategoriesWithProducts() {
-        List<Category> categoryList = categoryService.getAllCategories();
-        return categoryMapper.fromEntitiesToDtosWithProducts(categoryList);
+    @GetMapping(value = {"/products", "/{id}/products"})
+    public List<CategoryWithProductsDto> getCategoryWithProducts(@PathVariable Optional<Integer> id) {
+        if (id.isPresent()) {
+            Category category = categoryService.getCategory(id.get());
+            List<Category> categoryList = List.of(category);
+            return categoryMapper.fromEntitiesToDtosWithProducts(categoryList);
+        }
+        List<Category> categoryListWithProducts = categoryService.getAllCategories();
+        return categoryMapper.fromEntitiesToDtosWithProducts(categoryListWithProducts);
     }
 
     @PutMapping()

@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getCategory(Integer id) {
-        return findProductCategoryById(id);
+        return findCategoryById(id);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category updateCategory(Category categoryToBeUpdated) {
-        Category updatedCategory = findProductCategoryById(categoryToBeUpdated.getId());
+        Category updatedCategory = findCategoryById(categoryToBeUpdated.getId());
         updatedCategory.setName(categoryToBeUpdated.getName());
         updatedCategory.setType(categoryToBeUpdated.getType());
 
@@ -51,7 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.deleteById(id);
     }
 
-    private Category findProductCategoryById (Integer id) {
+    private Category findCategoryById (Integer id) {
         Optional<Category> optionalProductCategory = categoryRepository.findById(id);
         if(optionalProductCategory.isEmpty()){
             throw new CategoryNotFoundException(ExceptionMessages.PRODUCT_CATEGORY_NOT_FOUND.getErrorMessage(),

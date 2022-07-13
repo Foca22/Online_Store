@@ -1,6 +1,5 @@
 package com.project.store.controller.product;
 
-import com.project.store.dto.category.CategoryDto;
 import com.project.store.dto.product.ProductDto;
 import com.project.store.mapper.ProductMapper;
 import com.project.store.model.category.Category;
@@ -56,7 +55,7 @@ public class ProductController {
     public ProductDto updateProductAndCategory(@Valid @RequestBody ProductDto productDto) {
         Category category = categoryService.getCategory(productDto.getCategoryId());
         Product productToBeUpdated = productMapper.fromDtoToEntity(productDto, category);
-        Product updatedProduct = productService.updateProductAndCategory(productToBeUpdated);
+        Product updatedProduct = productService.updateProductCategory(productToBeUpdated);
 
         return productMapper.fromEntityToDto(updatedProduct);
     }

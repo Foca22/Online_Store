@@ -3,6 +3,7 @@ package com.project.store.exceptions.server;
 import com.project.store.dto.error.ErrorDto;
 import com.project.store.exceptions.category.CategoryNotFoundException;
 import com.project.store.exceptions.customer.CustomerNotFoundException;
+import com.project.store.exceptions.order.OrderNotFoundException;
 import com.project.store.exceptions.product.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;

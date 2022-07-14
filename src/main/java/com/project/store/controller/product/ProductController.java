@@ -51,8 +51,8 @@ public class ProductController {
         return productMapper.fromEntityToDto(updatedProduct);
     }
 
-    @PutMapping("/product-and-category")
-    public ProductDto updateProductAndCategory(@Valid @RequestBody ProductDto productDto) {
+    @PutMapping("/product-category")
+    public ProductDto updateProductCategory(@Valid @RequestBody ProductDto productDto) {
         Category category = categoryService.getCategory(productDto.getCategoryId());
         Product productToBeUpdated = productMapper.fromDtoToEntity(productDto, category);
         Product updatedProduct = productService.updateProductCategory(productToBeUpdated);

@@ -1,12 +1,11 @@
 package com.project.store.dto.product;
 
-import com.project.store.model.category.Category;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class ProductDto {
 
+    @NotNull(message = "product.id.cannot.be.null")
     private Integer id;
 
     @NotEmpty(message = "product.name.cannot.not.be.empty")
@@ -15,8 +14,8 @@ public class ProductDto {
     @NotNull(message = "product.price.cannot.be.null")
     private Float price;
 
-    private Category category;
-
+    @NotNull(message = "category.id.cannot.be.null")
+    private Integer categoryId;
 
     public Integer getId() {
         return id;
@@ -43,11 +42,11 @@ public class ProductDto {
     }
 
     public Integer getCategoryId() {
-        return category.getId();
+        return categoryId;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
 }

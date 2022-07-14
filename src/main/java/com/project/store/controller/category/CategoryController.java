@@ -29,7 +29,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public CategoryDto getProductCategory(@PathVariable Integer id) {
+    public CategoryDto getCategory(@PathVariable Integer id) {
         Category category = categoryService.getCategory(id);
 
         return categoryMapper.fromEntityToDto(category);
@@ -41,8 +41,8 @@ public class CategoryController {
         return categoryMapper.fromEntitiesToDtos(categoryList);
     }
 
-    @GetMapping(value = {"/products", "/{id}/products"})
-    public List<CategoryWithProductsDto> getCategoryWithProducts(@PathVariable Optional<Integer> id) {
+    @GetMapping(value = "/products")
+    public List<CategoryWithProductsDto> getCategoryWithProducts(@RequestParam(required = false) Optional<Integer> id) {
         if (id.isPresent()) {
             Category category = categoryService.getCategory(id.get());
             List<Category> categoryList = List.of(category);

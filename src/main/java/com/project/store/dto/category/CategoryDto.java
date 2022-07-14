@@ -1,9 +1,11 @@
 package com.project.store.dto.category;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class CategoryDto {
 
+    @NotNull(message = "category.id.cannot.be.null")
     private Integer id;
 
     @NotEmpty(message = "product.category.name.cannot.be.empty")

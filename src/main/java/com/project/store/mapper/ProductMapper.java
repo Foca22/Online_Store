@@ -1,4 +1,5 @@
 package com.project.store.mapper;
+
 import com.project.store.dto.product.ProductDto;
 import com.project.store.model.category.Category;
 import com.project.store.model.product.Product;
@@ -46,7 +47,7 @@ public class ProductMapper {
         productDto.setId(productEntity.getId());
         productDto.setName(productEntity.getName());
         productDto.setPrice(productEntity.getPrice());
-        productDto.setCategory(productEntity.getCategory());
+        productDto.setCategoryId(productEntity.getCategory().getId());
 
         return productDto;
     }

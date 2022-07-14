@@ -3,10 +3,12 @@ package com.project.store.dto.category;
 import com.project.store.dto.product.ProductDto;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class CategoryWithProductsDto {
 
+    @NotNull(message = "category.id.cannot.be.null")
     private Integer id;
 
     @NotEmpty(message = "product.category.name.cannot.be.empty")

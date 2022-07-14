@@ -52,17 +52,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProductCategory(Product productToBeUpdated) {
-        Product updatedProduct = findProductById(productToBeUpdated.getId());
-        updatedProduct.setCategory(productToBeUpdated.getCategory());
-
-        return productRepository.save(updatedProduct);
+        return productRepository.save(productToBeUpdated);
     }
 
     @Override
     public void deleteProduct(Integer id) {
         productRepository.deleteById(id);
     }
-
 
     private Product findProductById(Integer id) {
         Optional<Product> optionalProduct = productRepository.findById(id);

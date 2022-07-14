@@ -2,10 +2,12 @@ package com.project.store.dto.customer;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class CustomerDto {
 
+    @NotNull(message = "customer.id.cannot.be.null")
     private Integer id;
 
     @NotEmpty(message = "customer.first.name.cannot.be.empty")

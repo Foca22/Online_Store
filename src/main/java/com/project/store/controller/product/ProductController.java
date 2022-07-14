@@ -54,10 +54,10 @@ public class ProductController {
     @PutMapping("/product-category")
     public ProductDto updateProductCategory(@Valid @RequestBody ProductDto productDto) {
         Category category = categoryService.getCategory(productDto.getCategoryId());
-        Product productToBeUpdated = productMapper.fromDtoToEntity(productDto, category);
-        Product updatedProduct = productService.updateProductCategory(productToBeUpdated);
+        Product productUpdatedWithNewCategory = productMapper.fromDtoToEntity(productDto, category);
+        Product updatedProductCategory = productService.updateProductCategory(productUpdatedWithNewCategory);
 
-        return productMapper.fromEntityToDto(updatedProduct);
+        return productMapper.fromEntityToDto(updatedProductCategory);
     }
 
     @DeleteMapping("/{id}")

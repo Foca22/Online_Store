@@ -52,6 +52,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProductCategory(Product productToBeUpdated) {
+        Product updatedProductCategory = findProductById(productToBeUpdated.getId());
+        updatedProductCategory.setCategory(productToBeUpdated.getCategory());
         return productRepository.save(productToBeUpdated);
     }
 

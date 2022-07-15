@@ -40,8 +40,8 @@ public class CustomerController {
     }
 
     @PutMapping()
-    public CustomerDto updateCustomer(@Valid @RequestBody CustomerDto customerUpdateRequest){
-        Customer customerToBeUpdated = customerMapper.fromDtoToEntity(customerUpdateRequest);
+    public CustomerDto updateCustomer(@Valid @RequestBody CustomerDto customerDto){
+        Customer customerToBeUpdated = customerMapper.fromDtoToEntity(customerDto);
         Customer saveUpdatedCustomer = customerService.updateCustomer(customerToBeUpdated);
 
         return customerMapper.fromEntityToDto(saveUpdatedCustomer);

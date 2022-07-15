@@ -1,14 +1,17 @@
 package com.project.store.model.category;
 
+import com.project.store.model.product.Product;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "product_categories")
-public class ProductCategory {
+@Table(name = "category")
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_category_id", updatable = false, nullable = false)
+    @Column(name = "category_id", updatable = false, nullable = false)
     private Integer id;
 
     @Column(name = "name")
@@ -17,7 +20,10 @@ public class ProductCategory {
     @Column(name = "type")
     private String type;
 
-    public ProductCategory() {
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
+
+    public Category() {
     }
 
     public Integer getId() {
@@ -42,5 +48,13 @@ public class ProductCategory {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

@@ -3,11 +3,11 @@ package com.project.store.service.impl;
 
 import com.project.store.exceptions.messages.ExceptionMessages;
 import com.project.store.exceptions.product.ProductNotFoundException;
-import com.project.store.model.category.Category;
 import com.project.store.model.product.Product;
+import com.project.store.repository.filter.ProductFilterRepository;
 import com.project.store.repository.ProductRepository;
+import com.project.store.repository.filter.SearchCriteria;
 import com.project.store.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,9 +20,12 @@ public class ProductServiceImpl implements ProductService {
 
     private CategoryServiceImpl categoryService;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryServiceImpl categoryService){
+    private ProductFilterRepository productFilterRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository, CategoryServiceImpl categoryService, ProductFilterRepository productFilterRepository) {
         this.productRepository = productRepository;
         this.categoryService = categoryService;
+        this.productFilterRepository = productFilterRepository;
     }
 
     @Override
@@ -61,10 +64,15 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
+    @Override
+    public List<Product> searchProducts(List<SearchCriteria> searchCriteria) {
+        return productFilterRepository.filter(searchCriteria);
+    }
+
     private Product findProductById(Integer id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
 
-        if(optionalProduct.isEmpty()){
+        if (optionalProduct.isEmpty()) {
             throw new ProductNotFoundException(ExceptionMessages.PRODUCT_NOT_FOUND.getErrorMessage(),
                     ExceptionMessages.PRODUCT_NOT_FOUND.getHttpStatusCode());
         }

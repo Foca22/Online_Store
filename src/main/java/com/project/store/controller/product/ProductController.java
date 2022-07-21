@@ -4,6 +4,7 @@ import com.project.store.dto.product.ProductDto;
 import com.project.store.mapper.ProductMapper;
 import com.project.store.model.category.Category;
 import com.project.store.model.product.Product;
+import com.project.store.repository.filter.SearchCriteria;
 import com.project.store.service.impl.CategoryServiceImpl;
 import com.project.store.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,12 @@ public class ProductController {
     @GetMapping()
     public List<ProductDto> getAllProducts() {
         List<Product> productList = productService.getAllProducts();
+        return productMapper.fromEntitiesToDtos(productList);
+    }
+
+    @GetMapping("/filter")
+    public List<ProductDto> searchProducts(@Valid @RequestBody List<SearchCriteria> searchCriteria) {
+        List<Product> productList = productService.searchProducts(searchCriteria);
         return productMapper.fromEntitiesToDtos(productList);
     }
 

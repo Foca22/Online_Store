@@ -4,16 +4,16 @@ import java.util.Objects;
 
 public class SearchCriteria {
 
-
     private String filterBy;
-
     private SearchOperation operation;
     private Object value;
+    private Object categoryId;
 
-    public SearchCriteria(String filterBy, String value, SearchOperation operation) {
+    public SearchCriteria(String filterBy, SearchOperation operation, String value, Object categoryId) {
         this.filterBy = filterBy;
         this.value = value;
         this.operation = operation;
+        this.categoryId = categoryId;
     }
 
     public SearchCriteria(){}
@@ -40,6 +40,14 @@ public class SearchCriteria {
 
     public void setOperation(SearchOperation operation) {
         this.operation = operation;
+    }
+
+    public Object getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Object categoryId) {
+        this.categoryId = categoryId;
     }
 
     @Override

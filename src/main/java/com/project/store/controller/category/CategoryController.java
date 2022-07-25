@@ -4,6 +4,7 @@ import com.project.store.dto.category.CategoryDto;
 import com.project.store.dto.category.CategoryWithProductsDto;
 import com.project.store.mapper.CategoryMapper;
 import com.project.store.model.category.Category;
+import com.project.store.repository.filter.SearchCriteria;
 import com.project.store.service.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,12 @@ public class CategoryController {
 
     private final CategoryServiceImpl categoryService;
     private final CategoryMapper categoryMapper;
+
+    @GetMapping("/filter")
+    private List<CategoryWithProductsDto> filter(@Valid @RequestBody List<SearchCriteria> searchCriteria){
+        List<Category> categoryList = categoryService.filter(searchCriteria);
+        return categoryMapper.fromEntitiesToDtosWithProducts(categoryList);
+    }
 
     @PostMapping()
     public CategoryDto saveCategory(@Valid @RequestBody CategoryDto categoryDto) {

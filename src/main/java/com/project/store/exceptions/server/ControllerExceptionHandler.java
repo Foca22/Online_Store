@@ -3,8 +3,8 @@ package com.project.store.exceptions.server;
 import com.project.store.dto.error.ErrorDto;
 import com.project.store.exceptions.category.CategoryNotFoundException;
 import com.project.store.exceptions.customer.CustomerNotFoundException;
-import com.project.store.exceptions.order.OrderNotFoundException;
 import com.project.store.exceptions.product.ProductNotFoundException;
+import com.project.store.exceptions.product.SearchCriteriaInvalidException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -48,6 +48,12 @@ public class ControllerExceptionHandler {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ErrorDto handleProductNotFoundException(Exception exception) {
         return handleBaseException(exception, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({SearchCriteriaInvalidException.class})
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorDto handleSearchCriteriaInvalidException(Exception exception) {
+        return handleBaseException(exception, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})

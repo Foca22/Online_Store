@@ -3,7 +3,11 @@ package com.project.store.service.impl;
 import com.project.store.exceptions.category.CategoryNotFoundException;
 import com.project.store.exceptions.messages.ExceptionMessages;
 import com.project.store.model.category.Category;
+import com.project.store.model.product.Product;
 import com.project.store.repository.CategoryRepository;
+import com.project.store.repository.filter.CategoryFilterRepository;
+import com.project.store.repository.filter.ProductFilterRepository;
+import com.project.store.repository.filter.SearchCriteria;
 import com.project.store.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +20,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     public final CategoryRepository categoryRepository;
 
+    public final CategoryFilterRepository categoryFilterRepository;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository){
+
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryFilterRepository categoryFilterRepository){
         this.categoryRepository = categoryRepository;
+        this.categoryFilterRepository = categoryFilterRepository;
     }
 
+    public List<Category> filter(List<SearchCriteria> searchCriteria){
+        return categoryFilterRepository.filterCategory(searchCriteria);
+    }
 
     @Override
     public Category saveCategory(Category categoryToBeSaved) {

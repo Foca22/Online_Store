@@ -23,6 +23,12 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 
+    public Category(String name, String type, List<Product> products) {
+        this.name = name;
+        this.type = type;
+        this.products = products;
+    }
+
     public Category() {
     }
 

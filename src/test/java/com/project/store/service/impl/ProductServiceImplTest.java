@@ -7,8 +7,10 @@ import com.project.store.model.product.Product;
 import com.project.store.repository.ProductRepository;
 import com.project.store.repository.filter.ProductFilterRepository;
 import com.project.store.repository.filter.SearchCriteria;
+import com.project.store.repository.filter.SearchOperation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -187,6 +189,54 @@ class ProductServiceImplTest {
         assertTrue(expectedMessage.equals(actualMessage));
     }
 
+
+    @Test
+    public void shouldCatchArgumentForFilteringProducts() {
+        SearchCriteria searchCriteria1 = new SearchCriteria("name", SearchOperation.LIKE, "USB Cable", null);
+        SearchCriteria searchCriteria2 = new SearchCriteria("name", SearchOperation.LIKE, "HDMI Cable", null);
+        SearchCriteria searchCriteria3 = new SearchCriteria("price", SearchOperation.LESS_THAN, "20F", null);
+
+        List<SearchCriteria> searchCriteriaList = List.of(searchCriteria1, searchCriteria2, searchCriteria3);
+
+        List<Product> productList = productService.searchProducts(searchCriteriaList);
+
+        ArgumentCaptor<List<SearchCriteria>> argument =
+                ArgumentCaptor.forClass(List.class);
+
+        verify(productFilterRepository).filter(argument.capture());
+
+        assertEquals(searchCriteria1.getFilterBy(), argument.getValue().get(0).getFilterBy());
+        assertEquals(searchCriteria1.getOperation(), argument.getValue().get(0).getOperation());
+        assertEquals(searchCriteria1.getValue(), argument.getValue().get(0).getValue());
+
+        assertEquals(searchCriteria2.getFilterBy(), argument.getValue().get(1).getFilterBy());
+        assertEquals(searchCriteria2.getOperation(), argument.getValue().get(1).getOperation());
+        assertEquals(searchCriteria2.getValue(), argument.getValue().get(1).getValue());
+
+        assertEquals(searchCriteria3.getFilterBy(), argument.getValue().get(2).getFilterBy());
+        assertEquals(searchCriteria3.getOperation(), argument.getValue().get(2).getOperation());
+        assertEquals(searchCriteria3.getValue(), argument.getValue().get(2).getValue());
+    }
+
+
+    @Test
+    public void shouldReturnProducts() {
+        Product product1 = new Product(name, price, category);
+        product1.setId(productId);
+
+        Product product2 = new Product("HDMI Cable", 37F, category);
+        product2.setId(2);
+
+        when(productFilterRepository.filter(any(List.class))).thenReturn(List.of(product1, product2));
+
+        List<Product> productList = productService.searchProducts(searchCriteria);
+
+        assertEquals(2, productList.size());
+        assertEquals(product1, productList.get(0));
+        assertEquals(product2, productList.get(1));
+
+
+    }
     @Test
     public void shouldDeleteProduct() {
         Product product = new Product(name, price, category);

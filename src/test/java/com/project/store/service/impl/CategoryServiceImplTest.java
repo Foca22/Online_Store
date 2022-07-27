@@ -10,6 +10,7 @@ import com.project.store.repository.filter.SearchCriteria;
 import com.project.store.repository.filter.SearchOperation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -17,8 +18,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.*;
 
 class CategoryServiceImplTest {
 
@@ -35,6 +35,9 @@ class CategoryServiceImplTest {
 
     @Mock
     CategoryFilterRepository categoryFilterRepository;
+
+    @Mock
+    List<SearchCriteria> searchCriteria;
 
     @BeforeEach
     void setUp() {
@@ -140,6 +143,46 @@ class CategoryServiceImplTest {
         String actualMessage = exception.getMessage();
 
         assertTrue(expectedMessage.equals(actualMessage));
+    }
+
+    @Test
+    public void shouldCatchArgumentsForFilteringCategories() {
+        SearchCriteria searchCriteria1 = new SearchCriteria("name", SearchOperation.LIKE, "Laptop", null);
+        SearchCriteria searchCriteria2 = new SearchCriteria("name", SearchOperation.LIKE, "Smartphone & Accesories", null);
+
+        List<SearchCriteria> searchCriteriaList = List.of(searchCriteria1, searchCriteria2);
+
+        List<Category> categoryList = categoryService.filter(searchCriteriaList);
+
+        ArgumentCaptor<List<SearchCriteria>> argumentCaptor =
+                ArgumentCaptor.forClass(List.class);
+
+        verify(categoryFilterRepository).filterCategory(argumentCaptor.capture());
+
+        assertEquals(searchCriteria1.getFilterBy(), argumentCaptor.getValue().get(0).getFilterBy());
+        assertEquals(searchCriteria1.getOperation(), argumentCaptor.getValue().get(0).getOperation());
+        assertEquals(searchCriteria1.getValue(), argumentCaptor.getValue().get(0).getValue());
+
+        assertEquals(searchCriteria2.getFilterBy(), argumentCaptor.getValue().get(1).getFilterBy());
+        assertEquals(searchCriteria2.getOperation(), argumentCaptor.getValue().get(1).getOperation());
+        assertEquals(searchCriteria2.getValue(), argumentCaptor.getValue().get(1).getValue());
+    }
+
+    @Test
+    public void shouldReturnCategories(){
+        Category category1 = new Category(name, type, productList);
+        category1.setId(categoryID);
+
+        Category category2 = new Category("Smartphone & Accessories", "Smartphone", productList);
+        category2.setId(2);
+
+        when(categoryFilterRepository.filterCategory(searchCriteria)).thenReturn(List.of(category1, category2));
+
+        List<Category> categoryList = categoryService.filter(searchCriteria);
+
+        assertEquals(2, categoryList.size());
+        assertEquals(category1, categoryList.get(0));
+        assertEquals(category2, categoryList.get(1));
     }
 
     @Test

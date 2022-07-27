@@ -1,6 +1,8 @@
 package com.project.store.controller.customer;
 
 import com.project.store.dto.customer.CustomerDto;
+import com.project.store.exceptions.id.IdNullException;
+import com.project.store.exceptions.messages.ExceptionMessages;
 import com.project.store.mapper.CustomerMapper;
 import com.project.store.model.customer.Customer;
 import com.project.store.service.impl.CustomerServiceImpl;
@@ -41,6 +43,9 @@ public class CustomerController {
 
     @PutMapping()
     public CustomerDto updateCustomer(@Valid @RequestBody CustomerDto customerDto){
+        if(customerDto.getId() == null){
+            throw new IdNullException(ExceptionMessages.NULL_ID.getErrorMessage(), ExceptionMessages.NULL_ID.getHttpStatusCode());
+        }
         Customer customerToBeUpdated = customerMapper.fromDtoToEntity(customerDto);
         Customer saveUpdatedCustomer = customerService.updateCustomer(customerToBeUpdated);
 

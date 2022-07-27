@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 
 public class ProductDto {
 
-    @NotNull(message = "product.id.cannot.be.null")
     private Integer id;
 
     @NotEmpty(message = "product.name.cannot.not.be.empty")

@@ -1,6 +1,8 @@
 package com.project.store.controller.product;
 
 import com.project.store.dto.product.ProductDto;
+import com.project.store.exceptions.id.IdNullException;
+import com.project.store.exceptions.messages.ExceptionMessages;
 import com.project.store.mapper.ProductMapper;
 import com.project.store.model.category.Category;
 import com.project.store.model.product.Product;
@@ -52,6 +54,10 @@ public class ProductController {
 
     @PutMapping()
     public ProductDto updateProduct(@Valid @RequestBody ProductDto productDto) {
+        if(productDto.getId() == null){
+            throw new IdNullException(ExceptionMessages.NULL_ID.getErrorMessage(),
+                    ExceptionMessages.NULL_ID.getHttpStatusCode());
+        }
         Product productToBeUpdated = productMapper.fromDtoToEntity(productDto);
         Product updatedProduct = productService.updateProduct(productToBeUpdated);
 
@@ -60,6 +66,10 @@ public class ProductController {
 
     @PutMapping("/product-category")
     public ProductDto updateProductCategory(@Valid @RequestBody ProductDto productDto) {
+        if(productDto.getId() == null){
+            throw new IdNullException(ExceptionMessages.NULL_ID.getErrorMessage(),
+                    ExceptionMessages.NULL_ID.getHttpStatusCode());
+        }
         Category category = categoryService.getCategory(productDto.getCategoryId());
         Product productUpdatedWithNewCategory = productMapper.fromDtoToEntity(productDto, category);
         Product updatedProductCategory = productService.updateProductCategory(productUpdatedWithNewCategory);

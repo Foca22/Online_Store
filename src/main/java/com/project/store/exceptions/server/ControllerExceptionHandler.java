@@ -3,6 +3,7 @@ package com.project.store.exceptions.server;
 import com.project.store.dto.error.ErrorDto;
 import com.project.store.exceptions.category.CategoryNotFoundException;
 import com.project.store.exceptions.customer.CustomerNotFoundException;
+import com.project.store.exceptions.id.IdNullException;
 import com.project.store.exceptions.product.ProductNotFoundException;
 import com.project.store.exceptions.product.SearchCriteriaInvalidException;
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,12 @@ public class ControllerExceptionHandler {
     @ExceptionHandler({SearchCriteriaInvalidException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorDto handleSearchCriteriaInvalidException(Exception exception) {
+        return handleBaseException(exception, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({IdNullException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDto handleIdNullException(Exception exception) {
         return handleBaseException(exception, HttpStatus.BAD_REQUEST);
     }
 

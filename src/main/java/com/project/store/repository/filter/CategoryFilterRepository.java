@@ -26,10 +26,22 @@ public class CategoryFilterRepository {
     }
 
     public List<Category> filterCategory(List<SearchCriteria> searchCriteria) {
+        CriteriaQuery<Category> criteriaQuery = getCategoryCriteriaQuery(searchCriteria);
+        return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+    private CriteriaQuery<Category> getCategoryCriteriaQuery(List<SearchCriteria> searchCriteria) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Category> criteriaQuery = criteriaBuilder.createQuery(Category.class);
         Root<Category> categoryRoot = criteriaQuery.from(Category.class);
 
+        List<Predicate> predicateList = getPredicates(searchCriteria, criteriaBuilder, categoryRoot);
+
+        criteriaQuery.select(categoryRoot).where(predicateList.toArray(new Predicate[0]));
+        return criteriaQuery;
+    }
+
+    private List<Predicate> getPredicates(List<SearchCriteria> searchCriteria, CriteriaBuilder criteriaBuilder, Root<Category> categoryRoot) {
         List<Predicate> predicateList = new ArrayList<>();
 
         Map<String, List<SearchCriteria>> mapForSearch = searchCriteria.stream()
@@ -45,9 +57,7 @@ public class CategoryFilterRepository {
                 predicateList.add(criteriaBuilder.and(collectByCategory(criteriaBuilder, categoryRoot, entry).toArray(new Predicate[0])));
             }
         }
-
-        criteriaQuery.select(categoryRoot).where(predicateList.toArray(new Predicate[0]));
-        return entityManager.createQuery(criteriaQuery).getResultList();
+        return predicateList;
     }
 
     private List<Predicate> collectByCategory(CriteriaBuilder criteriaBuilder, Root<Category> categoryRoot, Map.Entry<String, List<SearchCriteria>> entry) {

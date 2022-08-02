@@ -27,6 +27,13 @@ public class Customer {
     public Customer() {
     }
 
+    public Customer(String firstName, String lastName, String cnp, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.cnp = cnp;
+        this.email = email;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }

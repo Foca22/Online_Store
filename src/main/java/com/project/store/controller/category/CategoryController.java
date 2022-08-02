@@ -2,6 +2,8 @@ package com.project.store.controller.category;
 
 import com.project.store.dto.category.CategoryDto;
 import com.project.store.dto.category.CategoryWithProductsDto;
+import com.project.store.exceptions.id.IdNullException;
+import com.project.store.exceptions.messages.ExceptionMessages;
 import com.project.store.mapper.CategoryMapper;
 import com.project.store.model.category.Category;
 import com.project.store.repository.filter.SearchCriteria;
@@ -61,6 +63,10 @@ public class CategoryController {
 
     @PutMapping()
     public CategoryDto updateCategory(@Valid @RequestBody CategoryDto categoryDto) {
+        if(categoryDto.getId() == null){
+            throw new IdNullException(ExceptionMessages.NULL_ID.getErrorMessage(),
+                    ExceptionMessages.NULL_ID.getHttpStatusCode());
+        }
         Category categoryToBeUpdated = categoryMapper.fromDtoToEntity(categoryDto);
         Category updatedCategory = categoryService.updateCategory(categoryToBeUpdated);
 
